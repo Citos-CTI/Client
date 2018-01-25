@@ -16,5 +16,5 @@ target/dependency-maven-plugin-markers/org.xerial-sqlite-jdbc-jar-3.8.11.2.marke
 *.dll
 target/
 plugin/com.johannes.lsctic.panels.gui.plugins.AddressPlugin
-.idea
+.idea/
 .idea/sonarlint/
