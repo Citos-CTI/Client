@@ -1,8 +1,8 @@
-# jtc
-Java Telephony Client 
+# Citos CTI
+A pretty and simple CTI client for (soon) multiple telephony systems.
 
 What is this project about?
 
-Product of this project will be a java telephony client which will be compatible for several telephony servers.
+Product of this project will be a telephony client which will be compatible for several telephony servers.
 
 To be continued
