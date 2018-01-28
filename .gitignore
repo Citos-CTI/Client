@@ -18,3 +18,4 @@ target/
 plugin/com.citos.client.panels.gui.plugins.AddressPlugin
 .idea/
 .idea/sonarlint/
+*.iml
