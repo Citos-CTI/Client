@@ -8,7 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
-<AnchorPane id="AnchorPane" prefHeight="380.0" style="-fx-background-color: rgba(0, 0, 0, 0.0);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.johannes.lsctic.FXMLController">
+<AnchorPane id="AnchorPane" prefHeight="380.0" style="-fx-background-color: rgba(0, 0, 0, 0.0);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.citos.client.FXMLController">
     <children>
       <TabPane fx:id="tabPane" focusTraversable="false" prefHeight="380.0" side="LEFT" style="-fx-background-color: rgba(0, 0, 0, 0.0);" tabClosingPolicy="UNAVAILABLE">
         <tabs>

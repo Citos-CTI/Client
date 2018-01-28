@@ -2,7 +2,7 @@
  * Copyright (c) 2017. Johannes Engler
  */
 
-package com.johannes.lsctic;
+package com.citos.client;
 
 import org.junit.Test;
 

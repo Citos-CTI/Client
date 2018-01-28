@@ -2,11 +2,11 @@ diff --git a/src/main/java/com/johannes/lsctic/amiapi/SecureChatClientHandler.ja
 index dc7bf5c..be42eb5 100644
 --- a/src/main/java/com/johannes/lsctic/amiapi/SecureChatClientHandler.java
 +++ b/src/main/java/com/johannes/lsctic/amiapi/SecureChatClientHandler.java
-@@ -11,12 +11,12 @@ package com.johannes.lsctic.amiapi;
+@@ -11,12 +11,12 @@ package com.citos.client.amiapi;
   */
- import com.johannes.lsctic.FXMLController;
- import com.johannes.lsctic.fields.HistoryField;
-+import com.johannes.lsctic.fields.InternField;
+ import com.citos.client.FXMLController;
+ import com.citos.client.fields.HistoryField;
++import com.citos.client.fields.InternField;
  import io.netty.channel.ChannelHandlerContext;
  import io.netty.channel.SimpleChannelInboundHandler;
 -import java.io.BufferedReader;
@@ -35,10 +35,10 @@ index 994c834..03faf0d 100644
 --- a/src/main/java/com/johannes/lsctic/amiapi/SecureChatClientInitializer.java
 +++ b/src/main/java/com/johannes/lsctic/amiapi/SecureChatClientInitializer.java
 @@ -6,6 +6,7 @@
- package com.johannes.lsctic.amiapi;
+ package com.citos.client.amiapi;
  
- import com.johannes.lsctic.FXMLController;
-+import com.johannes.lsctic.fields.InternField;
+ import com.citos.client.FXMLController;
++import com.citos.client.fields.InternField;
  import io.netty.channel.ChannelInitializer;
  import io.netty.channel.ChannelPipeline;
  import io.netty.channel.socket.SocketChannel;

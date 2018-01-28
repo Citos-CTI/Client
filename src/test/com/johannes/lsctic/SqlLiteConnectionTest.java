@@ -2,9 +2,9 @@
  * Copyright (c) 2017. Johannes Engler
  */
 
-package com.johannes.lsctic;
+package com.citos.client;
 
-import com.johannes.lsctic.panels.gui.plugins.PluginDataField;
+import com.citos.client.panels.gui.plugins.PluginDataField;
 import org.junit.Assert;
 import org.junit.Test;
 
