@@ -7,34 +7,25 @@ jdk:
 addons:
   sonarcloud:
     branches:
-      - master
-      - Working_Version
-      - sprint4
-    organization: "cicti"
+    - master
+    - Working_Version
+    - sprint4
+    organization: cicti
     token:
-      secure: "OQeU8LJ0CcSZgxsXwYxkiOSrNJ6QM+ZB2NYn8cTqgfhpDtIuY9TGru8x/zcHsGU0nVwNCyZl3+ZvMmEDjMN3pw5MXs7sBSe96mNZE8+73ORmwLkWHaVtRdgyjY0pqBpA6GAgOvMkHovZ7eMpJAIRFq0ZTK7VmQuqMIgIRutYRVkSKyuwa85582H3/7r+nDYdF8QpTGRHEQ0EOB4kO16YlbZGqxfT4MQs6B1xP2iPAPZsGmox1PG8VV6bMjqxenQWZ80Cs1D+gYCvGPJ0g1s9xd+1FHaEoLGmPRdwjNgT0Lg/qoWDqkgW0shgBn2k3npD4FF0SP1tSiclHi70Sfl51nIeYnM4Yp3RYXVBqiDTQ8uS6p1VpKO3D9Pm7r0H8Pa7v3CUUg/Ri9XXTh/5CcadSjox/ZcylSrPhR9LwCC+KLZnBhdqjjdEIuYitbTO2/dR98RUbkjNgIokehjWTeu3+ydoQhJn7rnv7KhIRZYAGoP91Xn7eXIsUW208EgMe8P91TJaOL0QjJDZkpKwoY2tfRLToI/maZ2fJLlE+BoDiZl79bWzWcU8vBgqpxO9c/aGac8+5M2h5tyPwvO+9NgeZFazWk1MvUsT8WZLiBTpllEo4VNWAEANNHO5OU/SNlLLk+r1SioFnO4syjrz4snPbWX5TpkaLEnWPSLRWLvwluM="
+      secure: OQeU8LJ0CcSZgxsXwYxkiOSrNJ6QM+ZB2NYn8cTqgfhpDtIuY9TGru8x/zcHsGU0nVwNCyZl3+ZvMmEDjMN3pw5MXs7sBSe96mNZE8+73ORmwLkWHaVtRdgyjY0pqBpA6GAgOvMkHovZ7eMpJAIRFq0ZTK7VmQuqMIgIRutYRVkSKyuwa85582H3/7r+nDYdF8QpTGRHEQ0EOB4kO16YlbZGqxfT4MQs6B1xP2iPAPZsGmox1PG8VV6bMjqxenQWZ80Cs1D+gYCvGPJ0g1s9xd+1FHaEoLGmPRdwjNgT0Lg/qoWDqkgW0shgBn2k3npD4FF0SP1tSiclHi70Sfl51nIeYnM4Yp3RYXVBqiDTQ8uS6p1VpKO3D9Pm7r0H8Pa7v3CUUg/Ri9XXTh/5CcadSjox/ZcylSrPhR9LwCC+KLZnBhdqjjdEIuYitbTO2/dR98RUbkjNgIokehjWTeu3+ydoQhJn7rnv7KhIRZYAGoP91Xn7eXIsUW208EgMe8P91TJaOL0QjJDZkpKwoY2tfRLToI/maZ2fJLlE+BoDiZl79bWzWcU8vBgqpxO9c/aGac8+5M2h5tyPwvO+9NgeZFazWk1MvUsT8WZLiBTpllEo4VNWAEANNHO5OU/SNlLLk+r1SioFnO4syjrz4snPbWX5TpkaLEnWPSLRWLvwluM=
 script:
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
+- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
 cache:
   directories:
-    - '$HOME/.sonar/cache'
-    - '$HOME/.m2/repository'
+  - "$HOME/.sonar/cache"
+  - "$HOME/.m2/repository"
 deploy:
   provider: releases
   api_key:
-    secure: "MSI8WhKwPt2hdCAAi2EYPVJQKm2Hs8PhDunKbfpF+5+hGNsXu+qVyeWyOOZCQhQczpuqEPbS3HBC76u0FxGzn1EweCarjhyH8vcqT5dTo1K8hniKlSi795cmPBfkfbkz83/eDmMIQgWcFzcww8aUttOVtgzpgmbXLX/IFQ2oi27PfESz0GmZ7j7rDDiCMoa2CdHhlApGiXKrc5O19UsdmTUsCq5khvYPJ+kGtenmtEfijhMH628mqaYXxPfHg8zENcwtj1NPwd4d90tiD5u2WVv/3iLJjIFL70dhEIVpFOkTMk+94pmExG8vZ2MhfzlX3iqRMicOOK9CycofWEK5ow9shJ9e8xjwRJvzMK65kQMmqMyfEidK/qILLSYXMFhfrlu77tWGKLZRWJLiFb7ohGXV2XE/XEpurYW1KwFHyl3sk6J7CZkK/ZjI1CyBhrGpgLSMupT7o0qkcwUeKv9cQUt1Wt5HX8cnNCB7UIhAgFii2nv7uV4RWogzXtg0QUAGVMFpmzviX5XXnUGyJnNQAqvfajtt0Bs8vcfO0fpGoz3xvB8axjwBSEvuDfCskVAN96k326IzqJUecrJSqp0zDA13USyxYTk9eASDCZY8ELiWbAUTgpPV9y3/USJOxY+CJKLhA6DQz4/mbXN9p2GOUNbyVSLXOy13at7om18mqxQ="
+    secure: MSI8WhKwPt2hdCAAi2EYPVJQKm2Hs8PhDunKbfpF+5+hGNsXu+qVyeWyOOZCQhQczpuqEPbS3HBC76u0FxGzn1EweCarjhyH8vcqT5dTo1K8hniKlSi795cmPBfkfbkz83/eDmMIQgWcFzcww8aUttOVtgzpgmbXLX/IFQ2oi27PfESz0GmZ7j7rDDiCMoa2CdHhlApGiXKrc5O19UsdmTUsCq5khvYPJ+kGtenmtEfijhMH628mqaYXxPfHg8zENcwtj1NPwd4d90tiD5u2WVv/3iLJjIFL70dhEIVpFOkTMk+94pmExG8vZ2MhfzlX3iqRMicOOK9CycofWEK5ow9shJ9e8xjwRJvzMK65kQMmqMyfEidK/qILLSYXMFhfrlu77tWGKLZRWJLiFb7ohGXV2XE/XEpurYW1KwFHyl3sk6J7CZkK/ZjI1CyBhrGpgLSMupT7o0qkcwUeKv9cQUt1Wt5HX8cnNCB7UIhAgFii2nv7uV4RWogzXtg0QUAGVMFpmzviX5XXnUGyJnNQAqvfajtt0Bs8vcfO0fpGoz3xvB8axjwBSEvuDfCskVAN96k326IzqJUecrJSqp0zDA13USyxYTk9eASDCZY8ELiWbAUTgpPV9y3/USJOxY+CJKLhA6DQz4/mbXN9p2GOUNbyVSLXOy13at7om18mqxQ=
   file: "$HOME/target/Citos-1.0.3.jar"
   skip_cleanup: true
   on:
     tags: true
     branches:
-      - master
-notifications:
-  hipchat:
-    rooms:
-      secure: spw7ITLBhMr+ExweijV3WKF9ZdQhFeZe0CSIL/NPsI9bjR01Fn18g/wGkDg4HmFWppNB28TFyYLpccxkMciqVt0jOfuJCe6TDSLSLYzYlTekpjSdtUMcb5n/QPHN/ywtUGWTMiusidRbxRInk2+MgSUZw3n0UrA23aDaYlStiaje1uLXB0b7gFHjjXMPBIi9AvJrrfG7R4A+gjFIAin7tQFVj9evx8aClp34QgBn7uDB7Zwu7Edo9mfQC479NPHNs4wAe96hhuhUG/dbFQYbH74VCGcJA/9kblZNIhN6FHE3Y2KD9CdfoTq6abhyy04OTFHsi+qSsJhqPAG54VkYVOFW7PaOdVPbYEyOqY7hBeSGjyYe1ze/bmJF7JskhGRp3MySWKCUZRljAspz9JAK8NsmgktDMx6t85NdDIBtMerFZBr+sTWjRFePxIMTu1+s4bvqFeE1fuxF9EjVx4U5Bnx9U7c1acWqHYY5R4gj1B8QNNuivajWyMW5po8cCHmCb9jsDlAbMj5zB5IvzcYsiyY/ZViProfvSF7NbXa3I7fZu8pUbVCkzEwbWy0CDNFDPBTWG/nad3Gcovzv6sSfLbTFnicflAWYBOYAM5m/EtVt5BFl9Jp2KWaNLWgNIScjv7QzyFVZhBlfZcMgrVLvAK/4X8jrCep3LjccaSDccGE=
-    template:
-      
-      - '%{repository}#%{build_number} (%{branch} - %{commit} : %{author}): %{message} For code analysis Sonar: https://sonarcloud.io/organizations/jebk/projects'
-    
-    notify: true
+    - master
