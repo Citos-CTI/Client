@@ -10,7 +10,7 @@ addons:
     - master
     - Working_Version
     - sprint4
-    organization: cicti
+    organization: "cicti"
     token: SONAR_TOKEN
 script:
 - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
