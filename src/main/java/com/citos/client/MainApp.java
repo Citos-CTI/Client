@@ -64,7 +64,7 @@ public class MainApp extends Application implements NativeKeyListener {
         stage.setY(primaryScreenBounds.getHeight() - scene.getHeight());
 
         stage.getIcons().add(new Image("/pics/easy_cti_logo_round.png"));
-        
+
         this.stage = stage;
 
         if (true) {
