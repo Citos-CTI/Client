@@ -11,13 +11,12 @@ cache:
   directories:
   - "$HOME/.sonar/cache"
   - "$HOME/.m2/repository"
-#deploy:
-  #provider: releases
-  #api_key:
-    #secure: MSI8WhKwPt2hdCAAi2EYPVJQKm2Hs8PhDunKbfpF+5+hGNsXu+qVyeWyOOZCQhQczpuqEPbS3HBC76u0FxGzn1EweCarjhyH8vcqT5dTo1K8hniKlSi795cmPBfkfbkz83/eDmMIQgWcFzcww8aUttOVtgzpgmbXLX/IFQ2oi27PfESz0GmZ7j7rDDiCMoa2CdHhlApGiXKrc5O19UsdmTUsCq5khvYPJ+kGtenmtEfijhMH628mqaYXxPfHg8zENcwtj1NPwd4d90tiD5u2WVv/3iLJjIFL70dhEIVpFOkTMk+94pmExG8vZ2MhfzlX3iqRMicOOK9CycofWEK5ow9shJ9e8xjwRJvzMK65kQMmqMyfEidK/qILLSYXMFhfrlu77tWGKLZRWJLiFb7ohGXV2XE/XEpurYW1KwFHyl3sk6J7CZkK/ZjI1CyBhrGpgLSMupT7o0qkcwUeKv9cQUt1Wt5HX8cnNCB7UIhAgFii2nv7uV4RWogzXtg0QUAGVMFpmzviX5XXnUGyJnNQAqvfajtt0Bs8vcfO0fpGoz3xvB8axjwBSEvuDfCskVAN96k326IzqJUecrJSqp0zDA13USyxYTk9eASDCZY8ELiWbAUTgpPV9y3/USJOxY+CJKLhA6DQz4/mbXN9p2GOUNbyVSLXOy13at7om18mqxQ=
-  #file: "$HOME/target/Citos-1.0.3.jar"
-  #skip_cleanup: true
-  #on:
-    #tags: true
-    #branches:
-    #- master
+deploy:
+  provider: releases
+  api_key: $GIT_TOKEN
+  file: "$HOME/target/Citos-1.0.3.jar"
+  skip_cleanup: true
+  on:
+    tags: true
+    branches:
+    - master
