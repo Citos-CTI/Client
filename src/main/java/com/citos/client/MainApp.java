@@ -52,7 +52,7 @@ public class MainApp extends Application implements NativeKeyListener {
         Font.loadFont(MainApp.class.getResource("/styles/Roboto-Light.ttf").toExternalForm(),13);
 
         scene.getStylesheets().add("/styles/Styles.css");
-        stage.setTitle("JavaFX and Maven");
+        stage.setTitle("Citel Manager");
 
         stage.initStyle(StageStyle.TRANSPARENT);
         scene.setFill(javafx.scene.paint.Color.TRANSPARENT);
@@ -61,7 +61,9 @@ public class MainApp extends Application implements NativeKeyListener {
         Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
         stage.show();
         stage.setX(primaryScreenBounds.getWidth() - scene.getWidth());
-        stage.setY(primaryScreenBounds.getHeight() - scene.getHeight());
+        String os = System.getProperty("os.name");
+        int offset = os.startsWith("Windows") ? 0 : 50;
+        stage.setY(primaryScreenBounds.getHeight() - scene.getHeight() +offset);
 
         stage.getIcons().add(new Image("/pics/easy_cti_logo_round.png"));
 
