@@ -11,7 +11,7 @@ Product of this project will be a telephony client which will be compatible for 
 - see the availability of a user in the intranet directly 
 - quickdial via the searchbox
 - enable do not disturb and redirect 
-- order user as you want per drag and drop or order them by call frequency 
+- sort user as you want per drag and drop or sort them by call frequency 
 ## Addresses
 ![alt text](https://github.com/Citos-CTI/Manager-Client/blob/master/images/addresses.PNG)
 ![alt text](https://github.com/Citos-CTI/Manager-Client/blob/master/images/addresses_unfolded.PNG)
