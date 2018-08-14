@@ -7,4 +7,4 @@ Product of this project will be a telephony client which will be compatible for 
 
 To be continued
 
-![alt text](https://raw.githubusercontent.com/Citos-CTI/Manager-Client/branch/Manager-Client/images/addresses.PNG)
+![alt text](https://github.com/Citos-CTI/Manager-Client/blob/master/images/addresses.PNG)
