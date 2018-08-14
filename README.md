@@ -12,5 +12,5 @@ To be continued
 ![alt text](https://github.com/Citos-CTI/Manager-Client/blob/master/images/addresses.PNG)
 ![alt text](https://github.com/Citos-CTI/Manager-Client/blob/master/images/history_scroll_function.PNG)
 ![alt text](https://github.com/Citos-CTI/Manager-Client/blob/master/images/history_search.PNG)
-![alt text](https://github.com/Citos-CTI/Manager-Client/blob/master/images/ldap Plugin.PNG)
+![alt text](https://github.com/Citos-CTI/Manager-Client/blob/master/images/ldap%20Plugin.PNG)
 ![alt text](https://github.com/Citos-CTI/Manager-Client/blob/master/images/states.PNG)
