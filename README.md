@@ -1,4 +1,4 @@
-# Citos CTI
+# Citos CTI [![Build Status](https://travis-ci.com/Citos-CTI/Manager-Client.svg?branch=master)](https://travis-ci.com/Citos-CTI/Manager-Client)
 A pretty and simple CTI client for (soon) multiple telephony systems.
 
 What is this project about?
