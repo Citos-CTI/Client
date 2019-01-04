@@ -90,11 +90,11 @@
                               <TextField fx:id="paneCTextIn" promptText="Search....." styleClass="textfield-search" VBox.vgrow="NEVER" />
                               <ScrollPane hbarPolicy="NEVER" hmax="0.0" prefViewportHeight="380.0" prefViewportWidth="300.0" vbarPolicy="NEVER">
                                  <content>
-                                    <VBox prefHeight="380.0" prefWidth="300.0" style="-fx-background-color: #FFFFFF11;">
+                                    <VBox prefWidth="300.0" style="-fx-background-color: #FFFFFF11;">
                                        <children>
-                                          <ScrollPane hbarPolicy="NEVER" hmax="0.0" prefViewportHeight="380.0" prefViewportWidth="300.0" style="-fx-background-color: rgba(38, 45, 70, 0.58);" vbarPolicy="NEVER" VBox.vgrow="ALWAYS">
+                                          <ScrollPane hbarPolicy="NEVER" hmax="0.0" prefViewportWidth="300.0" style="-fx-background-color: rgba(38, 45, 70, 0.58);" vbarPolicy="NEVER" VBox.vgrow="ALWAYS">
                                              <content>
-                                                <VBox fx:id="panelC" layoutX="58.0" layoutY="66.0" prefHeight="380.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <VBox fx:id="panelC" layoutX="58.0" layoutY="66.0" prefHeight="316.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                 </VBox>
                                              </content>
                                           </ScrollPane>

@@ -4,8 +4,6 @@
 
 package com.citos.client.panels.gui;
 
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
 import com.citos.client.PhoneNumber;
 import com.citos.client.SqlLiteConnection;
 import com.citos.client.messagestage.ErrorMessage;
@@ -19,15 +17,15 @@ import com.citos.client.panels.gui.fields.internevents.RemoveInternAndUpdateEven
 import com.citos.client.panels.gui.fields.internevents.ReorderDroppedEvent;
 import com.citos.client.panels.gui.fields.otherevents.*;
 import com.citos.client.panels.gui.fields.serverconnectionhandlerevents.*;
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 
-import java.awt.event.HierarchyBoundsAdapter;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 /**
  * Created by johannes on 06.04.2017.
@@ -44,12 +42,13 @@ public class DataPanelsRegister {
     private VBox panelC;
     private Button buttonNext;
     private Button buttonLast;
-    private int hFieldPerSite = 10;
+    private int hFieldPerSite = 5;
     private int historyfieldCount = 0;
-    private int maxHistoryFieldcount = 10;
+    private int maxHistoryFieldcount = 5;
     private boolean sortByCallCount = true;
     // Safes the last query for refreshs on the list
     private String searchPaneAValue = "";
+    private String searchPaneCValue = "";
 
     private long searchPaneCTimestamp;
     private boolean searchPaneCBlock = false;
@@ -86,9 +85,9 @@ public class DataPanelsRegister {
 
         buttonNext.setOnMouseClicked(event -> {
             ++historyfieldCount;
-            this.buttonLast.setDisable(false);
             historyFields.clear();
-            this.eventBus.post(new OrderCDRsEvent(historyfieldCount * hFieldPerSite, hFieldPerSite));
+            this.buttonLast.setDisable(false);
+            orderNextSideHistory();
             // if for the next are not enough fields -> Disable button
             if ((historyfieldCount + 1) * hFieldPerSite > maxHistoryFieldcount) {
                 this.buttonNext.setDisable(true);
@@ -99,7 +98,7 @@ public class DataPanelsRegister {
             --historyfieldCount;
             historyFields.clear();
             this.buttonNext.setDisable(false);
-            this.eventBus.post(new OrderCDRsEvent(historyfieldCount * hFieldPerSite, hFieldPerSite));
+            orderNextSideHistory();
             // if user is on page 0 (start page, newest) -> Disable button
             if (historyfieldCount == 0) {
                 this.buttonLast.setDisable(true);
@@ -342,12 +341,12 @@ public class DataPanelsRegister {
     }
 
     public void searchPaneC(String newValue, boolean deleteRefresh) {
+        historyfieldCount = 0;
         if (newValue.matches("^[0-9]*$") && newValue.length() > 0) {
             //Search for Number in database on host
-            this.eventBus.post(new SearchCdrInDatabaseEvent(newValue, getAmountHistoryFields()));
+            this.eventBus.post(new SearchCdrInDatabaseEvent(newValue, getAmountHistoryFields(), historyfieldCount * hFieldPerSite));
+            searchPaneCValue = newValue;
             searchPaneCBlock = true;
-            buttonLast.setDisable(true);
-            buttonNext.setDisable(true);
         } else if (newValue.length() == 0 && !deleteRefresh) {
             historyfieldCount = 0;
             this.buttonLast.setDisable(true);
@@ -356,11 +355,11 @@ public class DataPanelsRegister {
         } else {
             //Resolve number from name and search this in database
             if (newValue.length() > 0) {
-                ResolveNumberFromNameEvent event = new ResolveNumberFromNameEvent(10, newValue);
+                ResolveNumberFromNameEvent event = new ResolveNumberFromNameEvent(5, newValue, historyfieldCount * hFieldPerSite);
                 this.eventBus.post(event);
                 Optional<InternField> found = internFields.values().stream().filter(internField -> internField.getName().toLowerCase().contains(event.getName().toLowerCase())).findFirst();
                 if (found.isPresent()) {
-                    this.eventBus.post(new SearchCdrInDatabaseEvent(found.get().getNumber(), getAmountHistoryFields(), event.getTimestamp()));
+                    this.eventBus.post(new SearchCdrInDatabaseEvent(found.get().getNumber(), getAmountHistoryFields(), historyfieldCount * hFieldPerSite, event.getTimestamp()));
                 }
                 searchPaneCBlock = true;
                 buttonLast.setDisable(true);
@@ -417,6 +416,19 @@ public class DataPanelsRegister {
         if(historyFields.size() > 0) {
             historyFields.clear();
             panelC.getChildren().clear();
+            this.eventBus.post(new OrderCDRsEvent(historyfieldCount * hFieldPerSite, hFieldPerSite));
+        }
+    }
+
+    private void orderNextSideHistory() {
+        if (searchPaneCBlock) {
+            ResolveNumberFromNameEvent event = new ResolveNumberFromNameEvent(5, searchPaneCString, historyfieldCount * hFieldPerSite);
+            this.eventBus.post(event);
+            Optional<InternField> found = internFields.values().stream().filter(internField -> internField.getName().toLowerCase().contains(event.getName().toLowerCase())).findFirst();
+            if (found.isPresent()) {
+                this.eventBus.post(new SearchCdrInDatabaseEvent(found.get().getNumber(), getAmountHistoryFields(), historyfieldCount * hFieldPerSite, event.getTimestamp()));
+            }
+        } else {
             this.eventBus.post(new OrderCDRsEvent(historyfieldCount * hFieldPerSite, hFieldPerSite));
         }
     }

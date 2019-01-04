@@ -71,7 +71,7 @@ public class SqlitePlugin implements AddressPlugin {
     }
 
     @Override
-    public void searchPossibleNumbers(String name, AtomicInteger left, long timestamp) {
+    public void searchPossibleNumbers(String name, AtomicInteger left, long timestamp, int start) {
 
     }
 

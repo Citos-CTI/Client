@@ -9,24 +9,20 @@
  */
 package com.citos.client.panels.gui.plugins.LdapPlugin;
 
-import com.google.common.eventbus.EventBus;
 import com.citos.client.panels.gui.fields.callrecordevents.FoundCdrNameInDataSourceEvent;
 import com.citos.client.panels.gui.fields.callrecordevents.NotFoundCdrNameInDataSourceEvent;
 import com.citos.client.panels.gui.fields.callrecordevents.SearchCdrInDatabaseEvent;
 import com.citos.client.panels.gui.fields.callrecordevents.SearchDataSourcesForCdrEvent;
-import com.citos.client.panels.gui.plugins.*;
+import com.citos.client.panels.gui.plugins.AddressBookEntry;
+import com.citos.client.panels.gui.plugins.AddressLoader;
+import com.citos.client.panels.gui.plugins.DataSource;
+import com.citos.client.panels.gui.plugins.PluginDataField;
+import com.google.common.eventbus.EventBus;
 
-import javax.naming.Context;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.*;
-import javax.naming.ldap.InitialLdapContext;
-import javax.naming.ldap.LdapContext;
-import java.sql.*;
 import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
@@ -159,15 +155,15 @@ public class LdapLoader implements AddressLoader {
     }
 
     // given a name we want to return the number for the database query
-    public void numberQuery(String name, AtomicInteger left, long searchTimestamp) {
+    public void numberQuery(String name, AtomicInteger left, long searchTimestamp, int start) {
 
         ArrayList<AddressBookEntry> results = getResults(name, 1);
 
         if (!results.isEmpty()) {
             if (storage.getTelephone() > -1) {
-                this.eventBus.post(new SearchCdrInDatabaseEvent(results.get(0).get(storage.getTelephone()), 10, searchTimestamp));
+                this.eventBus.post(new SearchCdrInDatabaseEvent(results.get(0).get(storage.getTelephone()), 10, start, searchTimestamp));
             } else if (storage.getMobile() > -1) {
-                this.eventBus.post(new SearchCdrInDatabaseEvent(results.get(0).get(storage.getMobile()), 10, searchTimestamp));
+                this.eventBus.post(new SearchCdrInDatabaseEvent(results.get(0).get(storage.getMobile()), 10, start, searchTimestamp));
             }
         }
     }

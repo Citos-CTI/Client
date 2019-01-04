@@ -4,7 +4,6 @@
 
 package com.citos.client.panels.gui.plugins.LdapPlugin;
 
-import com.citos.client.panels.gui.plugins.AddressLoader;
 import com.citos.client.panels.gui.fields.callrecordevents.SearchDataSourcesForCdrEvent;
 import com.citos.client.panels.gui.plugins.*;
 
@@ -72,8 +71,8 @@ public class LdapPlugin implements AddressPlugin {
     }
 
     @Override
-    public void searchPossibleNumbers(String name, AtomicInteger left, long searchTimestamp) {
-        loader.numberQuery(name, left, searchTimestamp);
+    public void searchPossibleNumbers(String name, AtomicInteger left, long searchTimestamp, int start) {
+        loader.numberQuery(name, left, searchTimestamp, start);
     }
 
     @Override

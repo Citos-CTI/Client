@@ -71,8 +71,8 @@ public class MysqlPlugin implements AddressPlugin {
     }
 
     @Override
-    public void searchPossibleNumbers(String name, AtomicInteger left, long searchTimestamp) {
-        loader.numberQuery(name, left, searchTimestamp);
+    public void searchPossibleNumbers(String name, AtomicInteger left, long searchTimestamp, int start) {
+        loader.numberQuery(name, left, searchTimestamp, start);
     }
 
     @Override

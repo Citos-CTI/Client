@@ -11,15 +11,13 @@ package com.citos.client.panels.gui.plugins;
 
 import com.citos.client.SqlLiteConnection;
 import com.citos.client.messagestage.ErrorMessage;
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
-import com.citos.client.SqlLiteConnection;
-import com.citos.client.messagestage.ErrorMessage;
 import com.citos.client.panels.gui.fields.callrecordevents.NotFoundCdrNameInDataSourceEvent;
 import com.citos.client.panels.gui.fields.callrecordevents.ResolveNumberFromNameEvent;
 import com.citos.client.panels.gui.fields.callrecordevents.SearchDataSourcesForCdrEvent;
 import com.citos.client.panels.gui.fields.otherevents.PluginLoadedEvent;
 import com.citos.client.panels.gui.fields.otherevents.UpdateAddressFieldsEvent;
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import javafx.application.Platform;
 
 import java.io.File;
@@ -235,7 +233,7 @@ public class PluginRegister {
     @Subscribe
     public void searchPossibleNumbersToName(ResolveNumberFromNameEvent event) {
         for (AddressPlugin plugin : loadedPlugins) {
-            plugin.searchPossibleNumbers(event.getName(), event.getLeft(), event.getTimestamp());
+            plugin.searchPossibleNumbers(event.getName(), event.getLeft(), event.getTimestamp(), event.getStart());
         }
     }
 

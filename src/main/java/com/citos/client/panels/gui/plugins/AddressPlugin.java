@@ -31,7 +31,7 @@ public interface AddressPlugin {
 
     ArrayList<AddressBookEntry> getResults(String query, int number);
 
-    void searchPossibleNumbers(String name, AtomicInteger left, long searchTimestamp);
+    void searchPossibleNumbers(String name, AtomicInteger left, long searchTimestamp, int start);
 
     void resolveNameForNumber(SearchDataSourcesForCdrEvent event, AtomicInteger terminated, AtomicBoolean found);
 

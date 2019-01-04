@@ -3,9 +3,6 @@
 */
 package com.citos.client.amiapi.netty;
 
-import com.citos.client.panels.gui.fields.HistoryField;
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
 import com.citos.client.messagestage.ErrorMessage;
 import com.citos.client.messagestage.SuccessMessage;
 import com.citos.client.panels.gui.fields.HistoryField;
@@ -18,6 +15,8 @@ import com.citos.client.panels.gui.fields.otherevents.StartConnectionEvent;
 import com.citos.client.panels.gui.fields.serverconnectionhandlerevents.*;
 import com.citos.client.panels.gui.plugins.pluginevents.CheckLicenseForPluginEvent;
 import com.citos.client.panels.gui.settings.PasswordChangeRequestEvent;
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
@@ -114,8 +113,7 @@ public class ServerConnectionHandler {
 
     @Subscribe
     public void searchCdr(SearchCdrInDatabaseEvent event) {
-        Logger.getLogger(getClass().getName()).info("Searching: "+event.getNumber());
-        this.write("008"+event.getNumber()+";"+event.getAmount()+";"+String.valueOf(event.getTimestamp())+";"+event.isStrict()+"\r\n");
+        this.write("008" + event.getNumber() + ";" + event.getAmount() + ";" + event.getStart() + ";" + String.valueOf(event.getTimestamp()) + ";" + event.isStrict() + "\r\n");
     }
 
     @Subscribe

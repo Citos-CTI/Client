@@ -4,7 +4,6 @@
 
 package com.citos.client.panels.gui.plugins.MysqlPlugin;
 
-import com.google.common.eventbus.EventBus;
 import com.citos.client.panels.gui.fields.callrecordevents.FoundCdrNameInDataSourceEvent;
 import com.citos.client.panels.gui.fields.callrecordevents.NotFoundCdrNameInDataSourceEvent;
 import com.citos.client.panels.gui.fields.callrecordevents.SearchCdrInDatabaseEvent;
@@ -12,6 +11,7 @@ import com.citos.client.panels.gui.fields.callrecordevents.SearchDataSourcesForC
 import com.citos.client.panels.gui.plugins.AddressBookEntry;
 import com.citos.client.panels.gui.plugins.AddressLoader;
 import com.citos.client.panels.gui.plugins.DataSource;
+import com.google.common.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -70,7 +70,7 @@ public class MysqlLoader implements AddressLoader {
     }
 
     // given a name we want to return the number for the database query
-    public void numberQuery(String name, AtomicInteger left,long searchTimestamp) {
+    public void numberQuery(String name, AtomicInteger left, long searchTimestamp, int start) {
         // Experimental implementation -> will in that fashion not work on actual data
         en.stream()
                 .filter(addressBookEntry ->
@@ -79,12 +79,12 @@ public class MysqlLoader implements AddressLoader {
                 .forEach(addressBookEntry -> {
                     if(addressBookEntry.getSource().getTelephone()>-1 && left.decrementAndGet()>0){
                             this.eventBus.post(new SearchCdrInDatabaseEvent(
-                                    addressBookEntry.get(addressBookEntry.getSource().getTelephone()), 10,searchTimestamp));
+                                    addressBookEntry.get(addressBookEntry.getSource().getTelephone()), 10, start, searchTimestamp));
 
                     }
                     if(addressBookEntry.getSource().getMobile()>-1 && left.decrementAndGet()>0){
                         this.eventBus.post(new SearchCdrInDatabaseEvent(
-                                addressBookEntry.get(addressBookEntry.getSource().getMobile()), 10,searchTimestamp));
+                                addressBookEntry.get(addressBookEntry.getSource().getMobile()), 10, start, searchTimestamp));
 
                     }
 
