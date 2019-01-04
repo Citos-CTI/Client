@@ -60,8 +60,8 @@
                             <goal>exec</goal>
                         </goals>
                         <configuration>
-                            <!--Just hillarious that path variables dont work as expected.-->
-                            <executable>C:\Program Files\Java\jdk1.8.0_191\bin\javapackager</executable>
+                            <!--Just hillarious that path variables dont work as expected. C:\Program Files\Java\jdk1.8.0_191\bin\javapackager-->
+                            <executable>${java.home}/bin/javapackager</executable>
                             <arguments>
                                 <argument>-createjar</argument>
                                 <argument>-nocss2bin</argument>
