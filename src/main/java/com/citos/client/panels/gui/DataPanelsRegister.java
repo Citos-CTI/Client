@@ -35,7 +35,7 @@ public class DataPanelsRegister {
     private HashMap<String, InternField> internFields;
     //Key = phonenumber/extension of the intern
     private Map<String, PhoneNumber> internNumbers;
-    private List<HistoryField> historyFields;
+    private HashSet<HistoryField> historyFields;
     private SqlLiteConnection sqlLiteConnection;
     private VBox panelA;
     private VBox panelB;
@@ -49,7 +49,6 @@ public class DataPanelsRegister {
     // Safes the last query for refreshs on the list
     private String searchPaneAValue = "";
     private String searchPaneCValue = "";
-
     private long searchPaneCTimestamp;
     private boolean searchPaneCBlock = false;
     private String searchPaneCString = "";
@@ -80,7 +79,7 @@ public class DataPanelsRegister {
                 -> internFields.put(g.getKey(), new InternField(g.getValue().getName(), g.getValue().getCount(),g.getValue().getPosition(), g.getKey(), eventBus,sortByCallCount)));
 
         updateView(new ArrayList<>(internFields.values()));
-        historyFields = new ArrayList<>();
+        historyFields = new HashSet();
         panelC.getChildren().addAll(historyFields);
 
         buttonNext.setOnMouseClicked(event -> {
@@ -175,18 +174,16 @@ public class DataPanelsRegister {
                 String name = internField.getName();
                 HistoryField f = new HistoryField(name, event.getWho(), event.getWhen(), event.getHowLong(), event.isOutgoing(),
                         event.isInternal(), event.getCountryCode(), event.getPrefix(), event.getTimeStamp(), event.getSearchText(), eventBus);
-                historyFields.add(0, f);
+                historyFields.add(f);
             } else if (resolveCache.containsKey(event.getWho())) {
                 HistoryField f = new HistoryField(resolveCache.get(event.getWho()), event.getWho(), event.getWhen(), event.getHowLong(), event.isOutgoing(),
                         event.isInternal(), event.getCountryCode(), event.getPrefix(), event.getTimeStamp(), "", eventBus);
-                historyFields.add(0, f);
+                historyFields.add(f);
             } else {
                 eventBus.post(new SearchDataSourcesForCdrEvent(event));
                 return;
             }
-            if (historyFields.size() >= hFieldPerSite) {
-                historyFields = historyFields.subList(0, hFieldPerSite);
-            }
+
             addHistoryFieldsSorted();
         }
     }
@@ -195,35 +192,41 @@ public class DataPanelsRegister {
     public void addCdrUpdateWithNameFromDataSource(FoundCdrNameInDataSourceEvent event) {
         HistoryField f = new HistoryField(event.getName(), event.getWho(), event.getWhen(), event.getHowLong(),
                 event.isOutgoing(), event.isInternal(), event.getCountryCode(), event.getPrefix(), event.getTimeStamp(), "", eventBus);
-        historyFields.add(0, f);
-        if (historyFields.size() >= hFieldPerSite) {
-            historyFields = historyFields.subList(0, hFieldPerSite);
-        }
+        historyFields.add(f);
         addHistoryFieldsSorted();
         resolveCache.put(event.getWho(), event.getName());
     }
 
+    // print the history fields on the screen - copy of historyfield because of concurrent modufication errors
     public void addHistoryFieldsSorted() {
+        ArrayList<HistoryField> hf = new ArrayList<>();
+        Iterator<HistoryField> historyFieldsIt = historyFields.iterator();
+        while (historyFieldsIt.hasNext()) {
+            //TODO: Here is sometimes a concurrent modification exception -> Maybe concurrent hashset or equal
+            hf.add(historyFieldsIt.next());
+        }
+        Collections.sort(hf, Comparator.comparingLong(HistoryField::getTimeStamp));
+        Collections.reverse(hf);
+
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                Collections.sort(historyFields, Comparator.comparingLong(HistoryField::getTimeStamp));
-                Collections.reverse(historyFields);
                 panelC.getChildren().clear();
-                panelC.getChildren().addAll(historyFields);
+                if (hf.size() > 4) {
+                    panelC.getChildren().addAll(hf.subList(0, hFieldPerSite));
+                } else {
+                    panelC.getChildren().addAll(hf);
+                }
             }
         });
-
     }
 
     @Subscribe
     public void addCdrUpdateWithoutName(NotFoundCdrNameInDataSourceEvent event) {
         HistoryField f = new HistoryField(event.getWho(), event.getWhen(), event.getHowLong(), event.isOutgoing(),
                 event.isInternal(), event.getCountryCode(), event.getPrefix(), event.getTimeStamp(), "", eventBus);
-        historyFields.add(0, f);
-        if (historyFields.size() >= hFieldPerSite) {
-            historyFields = historyFields.subList(0, hFieldPerSite);
-        }
+        historyFields.add(f);
+
         // The data comes from a not FX Thread ->  Therefore use run later
        addHistoryFieldsSorted();
     }
