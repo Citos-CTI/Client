@@ -76,7 +76,7 @@ public class DataPanelsRegister {
 
         internFields = new HashMap();
         internNumbers.entrySet().stream().forEach(g
-                -> internFields.put(g.getKey(), new InternField(g.getValue().getName(), g.getValue().getCount(),g.getValue().getPosition(), g.getKey(), eventBus,sortByCallCount)));
+                -> internFields.put(g.getKey(), new InternField(g.getValue().getName(), g.getValue().getCount(), g.getValue().getPosition(), g.getKey(), eventBus, sortByCallCount)));
 
         updateView(new ArrayList<>(internFields.values()));
         historyFields = new HashSet();

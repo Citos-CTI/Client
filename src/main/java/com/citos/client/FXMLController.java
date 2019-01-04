@@ -6,13 +6,9 @@ package com.citos.client;
 
 import com.citos.client.amiapi.netty.ServerConnectionHandler;
 import com.citos.client.panels.gui.DataPanelsRegister;
-import com.google.common.eventbus.EventBus;
-import com.citos.client.amiapi.netty.ServerConnectionHandler;
-import com.citos.client.panels.gui.DataPanelsRegister;
 import com.citos.client.panels.gui.fields.otherevents.StartConnectionEvent;
-import com.citos.client.panels.gui.fields.otherevents.UpdateAddressFieldsEvent;
 import com.citos.client.panels.gui.fields.serverconnectionhandlerevents.CallEvent;
-import com.citos.client.panels.gui.plugins.AddressBookEntry;
+import com.google.common.eventbus.EventBus;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -26,7 +22,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -165,5 +160,6 @@ public class FXMLController implements Initializable {
         paneCTextIn.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
             dataPanelsRegister.searchPaneC(newValue,false);
         });
+        storage.repushMainWindowEvents();
     }
 }

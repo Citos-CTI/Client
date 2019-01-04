@@ -4,14 +4,10 @@
 
 package com.citos.client;
 
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
 import com.citos.client.panels.gui.fields.otherevents.CloseApplicationSafelyEvent;
 import com.citos.client.panels.gui.fields.otherevents.StartConnectionEvent;
-import com.citos.client.panels.gui.fields.otherevents.UpdateAddressFieldsEvent;
 import com.citos.client.panels.gui.fields.otherevents.ViewOptionsChangedEvent;
 import com.citos.client.panels.gui.fields.serverconnectionhandlerevents.UserLoginStatusEvent;
-import com.citos.client.panels.gui.plugins.AddressBookEntry;
 import com.citos.client.panels.gui.plugins.AddressPlugin;
 import com.citos.client.panels.gui.plugins.PluginRegister;
 import com.citos.client.panels.gui.plugins.pluginevents.CheckLicenseForPluginEvent;
@@ -19,6 +15,8 @@ import com.citos.client.panels.gui.plugins.pluginevents.PluginLicenseApprovedEve
 import com.citos.client.panels.gui.settings.AsteriskSettingsField;
 import com.citos.client.panels.gui.settings.DataSourceSettingsField;
 import com.citos.client.panels.gui.settings.ProgramSettingsField;
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 
@@ -150,6 +148,11 @@ public final class OptionsStorage {
             }
         }
 
+    }
+
+    // Since MainWindow is created later than optionstorage we have to repush the events
+    public void repushMainWindowEvents() {
+        bus.post(new ViewOptionsChangedEvent(sortByCount));
     }
 
     /**
