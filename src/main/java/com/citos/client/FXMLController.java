@@ -11,6 +11,7 @@ import com.citos.client.panels.gui.fields.serverconnectionhandlerevents.CallEven
 import com.google.common.eventbus.EventBus;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
@@ -21,7 +22,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -91,11 +95,27 @@ public class FXMLController implements Initializable {
         this.scene = scene;
     }
 
+    public static String getUserDataDirectory() {
+        String path = System.getProperty("user.home") + File.separator + ".citos-client" + File.separator + getApplicationVersionString() + File.separator;
+        new File(path).mkdirs();
+        return path;
+    }
+
+    public static String getApplicationVersionString() {
+        final Properties properties = new Properties();
+        try {
+            properties.load(FXMLLoader.getDefaultClassLoader().getResourceAsStream("project.properties"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return properties.getProperty("version");
+    }
+
     public void startApp(EventBus eventBus) {
         this.eventBus = eventBus;
 
         // Sqlite connection must be established before creating the optionsstorage, because he loads data from sqlite
-        SqlLiteConnection sqlLiteConnection = new SqlLiteConnection("settingsAndData.db");
+        SqlLiteConnection sqlLiteConnection = new SqlLiteConnection(getUserDataDirectory() + "settingsAndData.db");
 
         // creates optionstorage which loads data from sqlite and triggers plugin loading
         OptionsStorage storage = new OptionsStorage(optionAccept, optionReject, panelD, eventBus, sqlLiteConnection);
