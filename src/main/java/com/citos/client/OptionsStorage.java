@@ -4,9 +4,7 @@
 
 package com.citos.client;
 
-import com.citos.client.panels.gui.fields.otherevents.CloseApplicationSafelyEvent;
-import com.citos.client.panels.gui.fields.otherevents.StartConnectionEvent;
-import com.citos.client.panels.gui.fields.otherevents.ViewOptionsChangedEvent;
+import com.citos.client.panels.gui.fields.otherevents.*;
 import com.citos.client.panels.gui.fields.serverconnectionhandlerevents.UserLoginStatusEvent;
 import com.citos.client.panels.gui.plugins.AddressPlugin;
 import com.citos.client.panels.gui.plugins.PluginRegister;
@@ -48,7 +46,7 @@ public final class OptionsStorage {
     public OptionsStorage(Button accept, Button reject, VBox panelD, EventBus bus, SqlLiteConnection sqlLiteConnection) {
         this.asteriskSettingsField = new AsteriskSettingsField(bus);
         this.pluginRegister = new PluginRegister(bus);
-        this.programSettingsField = new ProgramSettingsField();
+        this.programSettingsField = new ProgramSettingsField(bus);
 
         this.dataSourceSettingsField = new DataSourceSettingsField();
         this.bus = bus;
@@ -270,6 +268,12 @@ public final class OptionsStorage {
             options.add(new OptionTuple(value, "Sort by call count"));
             sortByCount = value;
         }
+        try (PreparedStatement ptsm = con.prepareStatement(query)) {
+            ptsm.setString(1, "windowPosition");
+            ResultSet amiAddressRS = ptsm.executeQuery();
+            String windowPos = !amiAddressRS.next() ? "0;0" : amiAddressRS.getString(SETTING);
+            bus.post(new WindowPositionLoadedEvent(windowPos));
+        }
         programSettingsField.setCheckBoxes(options);
     }
 
@@ -291,6 +295,11 @@ public final class OptionsStorage {
             // Needs to login for the plugin check -> Trigger it if logged in successfully
             setUpPlugins();
         }
+    }
+
+    @Subscribe
+    public void windowPositionChanged(EndWindowPositioningEvent ev) {
+        sqlLiteConnection.buildUpdateOrInsertStatementForSetting("windowPosition", ev.getX() + ";" + ev.getY());
     }
 
 

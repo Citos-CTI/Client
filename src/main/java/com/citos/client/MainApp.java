@@ -4,8 +4,12 @@
 
 package com.citos.client;
 
-import com.google.common.eventbus.EventBus;
 import com.citos.client.panels.gui.fields.otherevents.CloseApplicationSafelyEvent;
+import com.citos.client.panels.gui.fields.otherevents.EndWindowPositioningEvent;
+import com.citos.client.panels.gui.fields.otherevents.StartWindowPositioningEvent;
+import com.citos.client.panels.gui.fields.otherevents.WindowPositionLoadedEvent;
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -14,7 +18,12 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -30,12 +39,17 @@ import java.util.logging.Logger;
 public class MainApp extends Application implements NativeKeyListener {
 
     private Stage stage;
+    private Scene scene;
     // Bereich für den Hook
     private boolean strg = false;
     private boolean shift = false;
     private boolean five = false;
     private boolean escape = false;
-
+    private double xOffset = 0;
+    private double yOffset = 0;
+    private double x;
+    private double y;
+    private EventBus eventBus;
     public static void main(String[] args) {
         launch(args);
     }
@@ -45,7 +59,8 @@ public class MainApp extends Application implements NativeKeyListener {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Scene.fxml"));
         Parent root = loader.load();
         FXMLController controller = loader.getController();
-        EventBus eventBus = new EventBus();
+        eventBus = new EventBus();
+        eventBus.register(this);
         controller.startApp(eventBus);
         controller.setStage(stage);
         Scene scene = new Scene(root);
@@ -54,21 +69,28 @@ public class MainApp extends Application implements NativeKeyListener {
         scene.getStylesheets().add("/styles/Styles.css");
         stage.setTitle("Citel Manager");
 
+        root.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                xOffset = event.getSceneX();
+                yOffset = event.getSceneY();
+            }
+        });
+        root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                stage.setX(event.getScreenX() - xOffset);
+                stage.setY(event.getScreenY() - yOffset);
+            }
+        });
         stage.initStyle(StageStyle.TRANSPARENT);
         scene.setFill(javafx.scene.paint.Color.TRANSPARENT);
         stage.setScene(scene);
-
-        Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
         stage.show();
-        stage.setX(primaryScreenBounds.getWidth() - scene.getWidth());
-        String os = System.getProperty("os.name");
-        int offset = os.startsWith("Windows") ? 0 : 50;
-        stage.setY(primaryScreenBounds.getHeight() - scene.getHeight() +offset);
-
         stage.getIcons().add(new Image("/pics/easy_cti_logo_round.png"));
 
         this.stage = stage;
-
+        this.scene = scene;
         if (true) {
             // Get the logger for "org.jnativehook" and set the level to warning.
             Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
@@ -95,6 +117,8 @@ public class MainApp extends Application implements NativeKeyListener {
                 //TODO: Find way to securely shutdown program
             }
         });
+        // RACE CONDITION
+        setStagePosition();
     }
 
     /**
@@ -169,5 +193,70 @@ public class MainApp extends Application implements NativeKeyListener {
             default:
                 break;
         }
+    }
+
+    @Subscribe
+    public void startWindowPositioning(StartWindowPositioningEvent ev) {
+        StackPane root = new StackPane();
+        root.setBackground(Background.EMPTY);
+        String style = "-fx-background-color: rgba(0, 0, 0, 0.7);";
+        root.setStyle(style);
+
+        root.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                xOffset = event.getSceneX();
+                yOffset = event.getSceneY();
+            }
+        });
+        root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                x = event.getScreenX() - xOffset;
+                y = event.getScreenY() - yOffset;
+                setStagePosition();
+            }
+        });
+        root.setOnMouseReleased(event ->
+        {
+            eventBus.post(new EndWindowPositioningEvent(x, y));
+            stage.setScene(scene);
+            stage.show();
+        });
+
+        Text waitingForKey = new Text("Info:\n\n" + "Drag and Drop me");
+        waitingForKey.setTextAlignment(TextAlignment.CENTER);
+        waitingForKey.setFont(new Font(18));
+        waitingForKey.setStyle("-fx-fill: lightgray;");
+        root.getChildren().add(waitingForKey);
+        Scene scene = new Scene(root, stage.getWidth(), stage.getHeight());
+        scene.setFill(javafx.scene.paint.Color.TRANSPARENT);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    @Subscribe
+    public void loadedWindowPosition(WindowPositionLoadedEvent event) {
+        this.x = event.getX();
+        this.y = event.getY();
+
+        if (stage != null)
+            setStagePosition();
+    }
+
+    private void setStagePosition() {
+        // Check if the saved position is out of the window area - if go to border
+        Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+        if (primaryScreenBounds.getWidth() - scene.getWidth() < x) {
+            this.x = primaryScreenBounds.getWidth() - scene.getWidth() - 1;
+        }
+        if (primaryScreenBounds.getHeight() - scene.getHeight() < y) {
+            String os = System.getProperty("os.name");
+            int offset = os.startsWith("Windows") ? 50 : 0;
+            this.y = primaryScreenBounds.getHeight() - scene.getHeight() + offset;
+        }
+
+        stage.setX(this.x);
+        stage.setY(this.y);
     }
 }

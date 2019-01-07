@@ -5,8 +5,11 @@
 package com.citos.client.panels.gui.settings;
 
 import com.citos.client.OptionTuple;
-import com.citos.client.OptionTuple;
+import com.citos.client.panels.gui.fields.otherevents.StartWindowPositioningEvent;
+import com.google.common.eventbus.EventBus;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.layout.VBox;
 
@@ -20,10 +23,17 @@ public class ProgramSettingsField extends SettingsField {
 
     private ArrayList<CheckBox> checkBoxes;
     private boolean changed;
+    private Button change_position_window;
 
-    public ProgramSettingsField() {
+    public ProgramSettingsField(EventBus bus) {
         super("Other");
         checkBoxes = new ArrayList<>();
+        change_position_window = new Button("Window position");
+        change_position_window.setOnAction(event -> {
+            bus.post(new StartWindowPositioningEvent());
+        });
+        change_position_window.getStyleClass().add("button-ui");
+
         changed = false;
     }
 
@@ -52,7 +62,10 @@ public class ProgramSettingsField extends SettingsField {
     public void expand() {
         VBox v = new VBox();
         setMargin(v, new Insets(6, 0, 3, 0));
+        v.setAlignment(Pos.CENTER);
+        v.setSpacing(6);
         v.getChildren().addAll(checkBoxes);
+        v.getChildren().add(change_position_window);
         this.getChildren().add(v);
         super.expand();
     }
